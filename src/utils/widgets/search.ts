@@ -1,0 +1,1 @@
+export const SearchWidget = `<input type="search" id="search-bar" value="Feeling lucky?" disabled/>`;

@@ -1,11 +1,13 @@
 import { TextWidget } from "./widgets/text";
 import { TimeWidget } from "./widgets/time";
 import { DateWidget } from "./widgets/date";
+import { SearchWidget } from "./widgets/search";
 
 enum WidgetType {
     Text = "Text",
     Time = "Time",
     Date = "Date",
+    Search = "Search"
 };
 
 interface Widget {
@@ -22,6 +24,8 @@ function createWidgets(type: WidgetType): string {
             return TimeWidget;
         case WidgetType.Date:
             return DateWidget;
+        case WidgetType.Search:
+            return SearchWidget;
     };
 };
 
