@@ -92,8 +92,27 @@ function init() {
     document.body.appendChild(widgets_button);
   };
 
+  for (let id = 1; id <= 25; id++) {
+    createWidgetArea(id);
+  };
+
   document.addEventListener("click", closeAllOpened);
 };
+
+function createWidgetArea(id: number) {
+  const widget_area = document.createElement('div');
+  widget_area.className = 'widget-area';
+  widget_area.id = `widget-area-${id}`;
+
+  // widget_area.innerHTML = `<p class="text">${id}</p>`;
+
+  const widgets_overlay = document.getElementById("widgets-overlay");
+
+  if (widgets_overlay) {
+    widgets_overlay.appendChild(widget_area);
+  };
+};
+
 
 function createWidgetsMenu() {
   const widgets_menu_container = document.createElement("div");
@@ -122,11 +141,23 @@ function createWidgetsMenu() {
       e.dataTransfer?.setData("text", widget.type);
       widget_object.style.opacity = "0.3";
 
+      const widget_areas = document.querySelectorAll('.widget-area');
+
+      widget_areas.forEach(widget => {
+          widget.className = 'widget-area-visible';
+      });
+
       hideWidgetsMenu();
     });
 
     widget_object.addEventListener("dragend", () => {
       widget_object.style.opacity = "1";
+
+      const widget_areas = document.querySelectorAll('.widget-area-visible');
+
+      widget_areas.forEach(widget => {
+          widget.className = 'widget-area';
+      });
 
       showWidgetsMenu();
     });
