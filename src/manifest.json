@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Kofizen",
+  "version": "1.0",
+  "description": "Your new homescreen",
+  "icons": {
+    "48": "icons/icon.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "home.html"
+  },
+  "background": {
+    "scripts": ["main.js"],
+    "persistent": false
+  },
+  "permissions": [
+    "activeTab"
+  ]
+}
