@@ -1,0 +1,1 @@
+export const DateWidget = `<p class="text">${new Date().toLocaleDateString()}</p>`;

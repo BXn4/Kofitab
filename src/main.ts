@@ -1,16 +1,11 @@
-import { loadLocale, getLocalizedText } from './utils/locales';
+import { loadLocale, getLocalizedText } from "./utils/locales";
+import { widgets } from "./utils/widgets";
 
 const config = {
-  animations: true,
+  animations: false,
   settingsButtonVisible: true,
   widgetsButtonVisible: true,
   background: "./assets/images/backgrounds/default.jpg"
-};
-
-const widgets = {
-  text: "<p>Change me</p>",
-  time: "<div>12:00</div>",
-  date: "<div>12.21.24</div>"
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -32,10 +27,10 @@ function init() {
   };
 
   if (config.settingsButtonVisible) {
-    const settings_button = document.createElement('button');
-    settings_button.id = 'settings-button';
+    const settings_button = document.createElement("button");
+    settings_button.id = "settings-button";
 
-    settings_button.title = getLocalizedText('settings-tooltip');
+    settings_button.title = getLocalizedText("settings-tooltip");
   
     const namescape = "http://www.w3.org/2000/svg";
     const icon = document.createElementNS(namescape, "svg");
@@ -55,10 +50,10 @@ function init() {
   };
 
   if (config.widgetsButtonVisible) {
-    const widgets_button = document.createElement('button');
-    widgets_button.id = 'widgets-button';
+    const widgets_button = document.createElement("button");
+    widgets_button.id = "widgets-button";
 
-    widgets_button.title = getLocalizedText('widgets-tooltip');
+    widgets_button.title = getLocalizedText("widgets-tooltip");
   
     const namescape = "http://www.w3.org/2000/svg";
     const icon = document.createElementNS(namescape, "svg");
@@ -74,7 +69,69 @@ function init() {
     icon.appendChild(path);
 
     widgets_button.appendChild(icon);
+
+    widgets_button.onclick = () => {
+      createWidgetsMenu();
+    };
+
     document.body.appendChild(widgets_button);
   };
+};
 
+function createWidgetsMenu() {
+  const widgets_menu_container = document.createElement("div");
+  widgets_menu_container.id = "widgets-menu-container";
+  widgets_menu_container.className = "show-widgets-menu-container"
+
+  const title = document.createElement("p");
+  title.className = "menu-title text";
+  title.textContent = "Widgets";
+
+  const comment = document.createElement("p");
+  comment.className = "menu-comment text";
+  comment.textContent = "Just drag and drop widgets!";
+
+  widgets_menu_container.appendChild(title);
+  widgets_menu_container.appendChild(comment);
+
+  widgets.forEach(widget => {
+    const widget_object = document.createElement("div");
+    widget_object.classList.add(widget.className);
+    widget_object.innerHTML = widget.content;
+    widget_object.style.userSelect = "none";
+    widget_object.setAttribute("draggable", "true");
+
+    widget_object.addEventListener("dragstart", (e) => {
+        e.dataTransfer?.setData("text", widget.type);
+        widget_object.style.opacity = "0.3";
+
+        hideWidgetsMenu();
+    });
+
+    widget_object.addEventListener("dragend", () => {
+        widget_object.style.opacity = "1";
+
+        showWidgetsMenu();
+    });
+
+    widgets_menu_container.appendChild(widget_object);
+});
+
+  document.body.appendChild(widgets_menu_container);
+};
+
+function showWidgetsMenu() {
+  const widgets_menu_container = document.getElementById("widgets-menu-container");
+
+  if (widgets_menu_container) {
+    widgets_menu_container.className = "show-widgets-menu-container"
+  };
+};
+
+function hideWidgetsMenu() {
+  const widgets_menu_container = document.getElementById("widgets-menu-container");
+
+  if (widgets_menu_container) {
+    widgets_menu_container.className = "hide-widgets-menu-container"
+  };
 };

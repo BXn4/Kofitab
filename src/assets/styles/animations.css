@@ -1,16 +1,33 @@
 #background {
-    animation: fade-in 0.1s ease-in;
+  animation: fade-in 0.1s ease-in;
 }
-
 button:active {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
-
+.widget-box:hover {
+  transform: translateX(-5px);
+}
+@keyframes slide-in-lr {
+  from {
+      transform: translateX(-100%);
+ }
+  to {
+      transform: translateX(0);
+ }
+}
+@keyframes slide-out-rl {
+  from {
+      transform: translateX(0%);
+ }
+  to {
+      transform: translateX(-100%);
+ }
+}
 @keyframes fade-in {
-    0% {
-        opacity: 0;
-   }
-    100% {
-        opacity: 1;
-   }
+  0% {
+      opacity: 0;
+ }
+  100% {
+      opacity: 1;
+ }
 }

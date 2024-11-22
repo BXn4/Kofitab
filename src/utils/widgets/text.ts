@@ -1,0 +1,1 @@
+export const TextWidget = `<p class="text">Custom text</p>`;
