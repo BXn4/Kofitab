@@ -147,6 +147,16 @@ function createWidgetsMenu() {
           widget.className = 'widget-area-visible';
       });
 
+      const cancel_widget_drag = document.createElement("div");
+      cancel_widget_drag.id = "cancel-widget-drag";
+
+      const drag_drop_remove = document.createElement("p");
+      drag_drop_remove.textContent = "Drag and drop here to remove the widget";
+      drag_drop_remove.className = "text";
+
+      cancel_widget_drag.appendChild(drag_drop_remove);
+      document.body.appendChild(cancel_widget_drag);
+
       hideWidgetsMenu();
     });
 
@@ -158,6 +168,10 @@ function createWidgetsMenu() {
       widget_areas.forEach(widget => {
           widget.className = 'widget-area';
       });
+
+      const cancel_widget_drag = document.getElementById("cancel-widget-drag");
+      
+      cancel_widget_drag?.remove();
 
       showWidgetsMenu();
     });
