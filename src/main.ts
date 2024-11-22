@@ -2,7 +2,7 @@ import { loadLocale, getLocalizedText } from "./utils/locales";
 import { widgets } from "./utils/widgets";
 
 const config = {
-  animations: true,
+  animationsEnabled: true,
   settingsButtonVisible: true,
   widgetsButtonVisible: true,
   background: "./assets/images/backgrounds/default.jpg"
@@ -19,7 +19,7 @@ function init() {
     background.setAttribute("src", config.background);
   };
 
-  if (config.animations) {
+  if (config.animationsEnabled) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = "./assets/styles/animations.css";
@@ -162,34 +162,42 @@ function createSettingsMenu() {
 function showWidgetsMenu() {
   const widgets_menu_container = document.getElementById("widgets-menu-container");
 
-  if (widgets_menu_container) {
+  if (widgets_menu_container && config.animationsEnabled) {
     widgets_menu_container.className = "show-widgets-menu-container"
-  };
+  } else if (widgets_menu_container && !config.animationsEnabled) {
+    widgets_menu_container.remove();
+  }
 };
 
 function hideWidgetsMenu() {
   const widgets_menu_container = document.getElementById("widgets-menu-container");
 
-  if (widgets_menu_container) {
+  if (widgets_menu_container && config.animationsEnabled) {
     widgets_menu_container.className = "hide-widgets-menu-container"
-  };
+  } else if (widgets_menu_container && !config.animationsEnabled) {
+    widgets_menu_container.remove();
+  }
 };
 
 function showSettingsMenu() {
   const settings_menu_container = document.getElementById("settings-menu-container");
 
-  if (settings_menu_container) {
+  if (settings_menu_container && config.animationsEnabled) {
     settings_menu_container.className = "show-settings-menu-container"
-  };
+  } else if (settings_menu_container && !config.animationsEnabled) {
+    settings_menu_container.remove();
+  }
 };
 
 
 function hideSettingsMenu() {
   const settings_menu_container = document.getElementById("settings-menu-container");
 
-  if (settings_menu_container) {
+  if (settings_menu_container && config.animationsEnabled) {
     settings_menu_container.className = "hide-settings-menu-container"
-  };
+  } else if (settings_menu_container && !config.animationsEnabled) {
+    settings_menu_container.remove();
+  }
 };
 
 function closeAllOpened(event: MouseEvent) {
