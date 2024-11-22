@@ -7,6 +7,15 @@ button:active {
 .widget-box:hover {
   transform: translateX(-5px);
 }
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+.slider {
+  transition: 0.4s;
+}
+.slider:before {
+  transition: 0.4s;
+}
 @keyframes slide-in-lr {
   from {
       transform: translateX(-100%);

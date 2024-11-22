@@ -1,12 +1,6 @@
 import { loadLocale, getLocalizedText } from "./utils/locales";
 import { widgets } from "./utils/widgets";
-
-const config = {
-  animationsEnabled: true,
-  settingsButtonVisible: true,
-  widgetsButtonVisible: true,
-  background: "./assets/images/backgrounds/default.jpg"
-};
+import { config, settings } from "./utils/settings";
 
 document.addEventListener("DOMContentLoaded", () => {
   init();
@@ -31,7 +25,7 @@ function init() {
     settings_button.id = "settings-button";
 
     settings_button.title = getLocalizedText("settings-tooltip");
-  
+
     const namescape = "http://www.w3.org/2000/svg";
     const icon = document.createElementNS(namescape, "svg");
     icon.setAttribute("xmlns", namescape);
@@ -48,7 +42,9 @@ function init() {
     settings_button.appendChild(icon);
 
     settings_button.onclick = () => {
-      const settings_menu_container = document.getElementById("settings-menu-container");
+      const settings_menu_container = document.getElementById(
+        "settings-menu-container"
+      );
 
       if (settings_menu_container) {
         showSettingsMenu();
@@ -56,7 +52,6 @@ function init() {
         createSettingsMenu();
       };
     };
-
 
     document.body.appendChild(settings_button);
   };
@@ -66,7 +61,7 @@ function init() {
     widgets_button.id = "widgets-button";
 
     widgets_button.title = getLocalizedText("widgets-tooltip");
-  
+
     const namescape = "http://www.w3.org/2000/svg";
     const icon = document.createElementNS(namescape, "svg");
     icon.setAttribute("xmlns", namescape);
@@ -83,25 +78,27 @@ function init() {
     widgets_button.appendChild(icon);
 
     widgets_button.onclick = () => {
-      const widgets_menu_container = document.getElementById("widgets-menu-container");
+      const widgets_menu_container = document.getElementById(
+        "widgets-menu-container"
+      );
 
       if (widgets_menu_container) {
         showWidgetsMenu();
       } else if (!widgets_menu_container) {
-      createWidgetsMenu();
+        createWidgetsMenu();
       };
     };
 
     document.body.appendChild(widgets_button);
   };
 
-  document.addEventListener('click', closeAllOpened);
+  document.addEventListener("click", closeAllOpened);
 };
 
 function createWidgetsMenu() {
   const widgets_menu_container = document.createElement("div");
   widgets_menu_container.id = "widgets-menu-container";
-  widgets_menu_container.className = "show-widgets-menu-container"
+  widgets_menu_container.className = "show-widgets-menu-container";
 
   const title = document.createElement("p");
   title.className = "menu-title text";
@@ -114,7 +111,7 @@ function createWidgetsMenu() {
   widgets_menu_container.appendChild(title);
   widgets_menu_container.appendChild(comment);
 
-  widgets.forEach(widget => {
+  widgets.forEach((widget) => {
     const widget_object = document.createElement("div");
     widget_object.classList.add(widget.className);
     widget_object.innerHTML = widget.content;
@@ -122,20 +119,20 @@ function createWidgetsMenu() {
     widget_object.setAttribute("draggable", "true");
 
     widget_object.addEventListener("dragstart", (e) => {
-        e.dataTransfer?.setData("text", widget.type);
-        widget_object.style.opacity = "0.3";
+      e.dataTransfer?.setData("text", widget.type);
+      widget_object.style.opacity = "0.3";
 
-        hideWidgetsMenu();
+      hideWidgetsMenu();
     });
 
     widget_object.addEventListener("dragend", () => {
-        widget_object.style.opacity = "1";
+      widget_object.style.opacity = "1";
 
-        showWidgetsMenu();
+      showWidgetsMenu();
     });
 
     widgets_menu_container.appendChild(widget_object);
-});
+  });
 
   document.body.appendChild(widgets_menu_container);
 };
@@ -143,7 +140,7 @@ function createWidgetsMenu() {
 function createSettingsMenu() {
   const settings_menu_container = document.createElement("div");
   settings_menu_container.id = "settings-menu-container";
-  settings_menu_container.className = "show-settings-menu-container"
+  settings_menu_container.className = "show-settings-menu-container";
 
   const title = document.createElement("p");
   title.className = "menu-title text";
@@ -156,53 +153,74 @@ function createSettingsMenu() {
   settings_menu_container.appendChild(title);
   settings_menu_container.appendChild(comment);
 
+  settings.forEach((setting) => {
+    const settings_object = document.createElement("div");
+    settings_object.classList.add(setting.className);
+    settings_object.innerHTML = setting.content;
+    settings_object.style.userSelect = "none";
+    settings_object.setAttribute("draggable", "true");
+
+    settings_menu_container.appendChild(settings_object);
+  });
+
   document.body.appendChild(settings_menu_container);
 };
 
 function showWidgetsMenu() {
-  const widgets_menu_container = document.getElementById("widgets-menu-container");
+  const widgets_menu_container = document.getElementById(
+    "widgets-menu-container"
+  );
 
   if (widgets_menu_container && config.animationsEnabled) {
-    widgets_menu_container.className = "show-widgets-menu-container"
+    widgets_menu_container.className = "show-widgets-menu-container";
   } else if (widgets_menu_container && !config.animationsEnabled) {
     widgets_menu_container.remove();
-  }
+  };
 };
 
 function hideWidgetsMenu() {
-  const widgets_menu_container = document.getElementById("widgets-menu-container");
+  const widgets_menu_container = document.getElementById(
+    "widgets-menu-container"
+  );
 
   if (widgets_menu_container && config.animationsEnabled) {
-    widgets_menu_container.className = "hide-widgets-menu-container"
+    widgets_menu_container.className = "hide-widgets-menu-container";
   } else if (widgets_menu_container && !config.animationsEnabled) {
     widgets_menu_container.remove();
-  }
+  };
 };
 
 function showSettingsMenu() {
-  const settings_menu_container = document.getElementById("settings-menu-container");
+  const settings_menu_container = document.getElementById(
+    "settings-menu-container"
+  );
 
   if (settings_menu_container && config.animationsEnabled) {
-    settings_menu_container.className = "show-settings-menu-container"
+    settings_menu_container.className = "show-settings-menu-container";
   } else if (settings_menu_container && !config.animationsEnabled) {
     settings_menu_container.remove();
-  }
+  };
 };
 
-
 function hideSettingsMenu() {
-  const settings_menu_container = document.getElementById("settings-menu-container");
+  const settings_menu_container = document.getElementById(
+    "settings-menu-container"
+  );
 
   if (settings_menu_container && config.animationsEnabled) {
-    settings_menu_container.className = "hide-settings-menu-container"
+    settings_menu_container.className = "hide-settings-menu-container";
   } else if (settings_menu_container && !config.animationsEnabled) {
     settings_menu_container.remove();
-  }
+  };
 };
 
 function closeAllOpened(event: MouseEvent) {
-  const widgets_menu_container = document.getElementById("widgets-menu-container");
-  const settings_menu_container = document.getElementById("settings-menu-container");
+  const widgets_menu_container = document.getElementById(
+    "widgets-menu-container"
+  );
+  const settings_menu_container = document.getElementById(
+    "settings-menu-container"
+  );
 
   const container = document.getElementById("container");
 
