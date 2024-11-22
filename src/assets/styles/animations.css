@@ -12,7 +12,7 @@ button:active {
       transform: translateX(-100%);
  }
   to {
-      transform: translateX(0);
+      transform: translateX(0%);
  }
 }
 @keyframes slide-out-rl {
@@ -21,6 +21,22 @@ button:active {
  }
   to {
       transform: translateX(-100%);
+ }
+}
+@keyframes slide-in-rl {
+  from {
+      transform: translateX(100%);
+ }
+  to {
+      transform: translateX(0%);
+ }
+}
+@keyframes slide-out-lr {
+  from {
+      transform: translateX(0%);
+ }
+  to {
+      transform: translateX(100%);
  }
 }
 @keyframes fade-in {

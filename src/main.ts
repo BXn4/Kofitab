@@ -2,7 +2,7 @@ import { loadLocale, getLocalizedText } from "./utils/locales";
 import { widgets } from "./utils/widgets";
 
 const config = {
-  animations: false,
+  animations: true,
   settingsButtonVisible: true,
   widgetsButtonVisible: true,
   background: "./assets/images/backgrounds/default.jpg"
@@ -46,6 +46,18 @@ function init() {
     icon.appendChild(path);
 
     settings_button.appendChild(icon);
+
+    settings_button.onclick = () => {
+      const settings_menu_container = document.getElementById("settings-menu-container");
+
+      if (settings_menu_container) {
+        showSettingsMenu();
+      } else if (!settings_menu_container) {
+        createSettingsMenu();
+      };
+    };
+
+
     document.body.appendChild(settings_button);
   };
 
@@ -71,11 +83,19 @@ function init() {
     widgets_button.appendChild(icon);
 
     widgets_button.onclick = () => {
+      const widgets_menu_container = document.getElementById("widgets-menu-container");
+
+      if (widgets_menu_container) {
+        showWidgetsMenu();
+      } else if (!widgets_menu_container) {
       createWidgetsMenu();
+      };
     };
 
     document.body.appendChild(widgets_button);
   };
+
+  document.addEventListener('click', closeAllOpened);
 };
 
 function createWidgetsMenu() {
@@ -120,6 +140,25 @@ function createWidgetsMenu() {
   document.body.appendChild(widgets_menu_container);
 };
 
+function createSettingsMenu() {
+  const settings_menu_container = document.createElement("div");
+  settings_menu_container.id = "settings-menu-container";
+  settings_menu_container.className = "show-settings-menu-container"
+
+  const title = document.createElement("p");
+  title.className = "menu-title text";
+  title.textContent = "Settings";
+
+  const comment = document.createElement("p");
+  comment.className = "menu-comment text";
+  comment.textContent = "Modify the behavior";
+
+  settings_menu_container.appendChild(title);
+  settings_menu_container.appendChild(comment);
+
+  document.body.appendChild(settings_menu_container);
+};
+
 function showWidgetsMenu() {
   const widgets_menu_container = document.getElementById("widgets-menu-container");
 
@@ -133,5 +172,38 @@ function hideWidgetsMenu() {
 
   if (widgets_menu_container) {
     widgets_menu_container.className = "hide-widgets-menu-container"
+  };
+};
+
+function showSettingsMenu() {
+  const settings_menu_container = document.getElementById("settings-menu-container");
+
+  if (settings_menu_container) {
+    settings_menu_container.className = "show-settings-menu-container"
+  };
+};
+
+
+function hideSettingsMenu() {
+  const settings_menu_container = document.getElementById("settings-menu-container");
+
+  if (settings_menu_container) {
+    settings_menu_container.className = "hide-settings-menu-container"
+  };
+};
+
+function closeAllOpened(event: MouseEvent) {
+  const widgets_menu_container = document.getElementById("widgets-menu-container");
+  const settings_menu_container = document.getElementById("settings-menu-container");
+
+  const container = document.getElementById("container");
+
+  if (container && container.contains(event.target as Node)) {
+    if (widgets_menu_container) {
+      hideWidgetsMenu();
+    };
+    if (settings_menu_container) {
+      hideSettingsMenu();
+    };
   };
 };
