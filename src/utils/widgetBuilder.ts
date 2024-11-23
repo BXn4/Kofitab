@@ -18,36 +18,48 @@ enum WidgetType {
 };
 
 enum WidgetCategory {
+    All = "All",
     Text = "Text",
     Time = "Time",
     Date = "Date",
     Search = "Search",
     Weather = "Weather",
-    Music = "Music",
+    Media = "Media",
 };
 
-function createWidgets(type: WidgetType): { content: string; category: WidgetCategory } {
-    switch (type) {
-        case WidgetType.Text:
-            return { content: TextWidget, category: WidgetCategory.Text };
-        case WidgetType.Time:
-            return { content: TimeWidget, category: WidgetCategory.Time };
-        case WidgetType.Date:
-            return { content: DateWidget, category: WidgetCategory.Date };
-        case WidgetType.Search:
-            return { content: SearchWidget, category: WidgetCategory.Search };
-    }
-}
+const Widgets: Widget[] = [
+    {
+        type: WidgetType.Text,
+        category: WidgetCategory.Text,
+        className: "widget-box",
+        content: TextWidget,
+    },
+    {
+        type: WidgetType.Time,
+        category: WidgetCategory.Time,
+        className: "widget-box",
+        content: TimeWidget,
+    },
+    {
+        type: WidgetType.Date,
+        category: WidgetCategory.Date,
+        className: "widget-box",
+        content: DateWidget,
+    },
+    {
+        type: WidgetType.Search,
+        category: WidgetCategory.Search,
+        className: "widget-box",
+        content: SearchWidget,
+    },
+];
 
-const widgets: Widget[] = Object.values(WidgetType).map((type) => {
-    const { content, category: WidgetCategory } = createWidgets(type);
-
-    return {
-        type,
-        category: WidgetCategory,
-        className: 'widget-box',
-        content,
+function getWidgets(category: WidgetCategory): Widget[] {
+    if (category === WidgetCategory.All) {
+        return Widgets;
     };
-});
+    
+    return Widgets.filter(widget => widget.category === category);
+};
 
-export { widgets };
+export { getWidgets, WidgetCategory };

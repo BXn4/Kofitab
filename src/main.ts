@@ -1,5 +1,5 @@
 import { loadLocale, getLocalizedText } from "./utils/locales";
-import { widgets } from "./utils/widgetBuilder";
+import { getWidgets, WidgetCategory } from "./utils/widgetBuilder";
 import { config, settings } from "./utils/settings";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -127,10 +127,16 @@ function createWidgetsMenu() {
   comment.className = "menu-comment text";
   comment.textContent = "Just drag and drop widgets!";
 
+  const menu_category_filter = document.createElement("div");
+  menu_category_filter.id = "menu-category-filter";
+  menu_category_filter.className = "text";
+  menu_category_filter.textContent = "All";
+
   widgets_menu_container.appendChild(title);
   widgets_menu_container.appendChild(comment);
+  widgets_menu_container.appendChild(menu_category_filter);
 
-  widgets.forEach((widget) => {
+  getWidgets(WidgetCategory.All).forEach((widget) => {
     const widget_object = document.createElement("div");
     widget_object.classList.add(widget.className);
     widget_object.innerHTML = widget.content;
