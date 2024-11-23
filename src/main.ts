@@ -47,7 +47,11 @@ function init() {
       );
 
       if (settings_menu_container) {
-        showSettingsMenu();
+        if (settings_menu_container.classList.contains('active')) {
+            hideSettingsMenu();
+        } else if (!settings_menu_container.classList.contains('active')) {
+            showSettingsMenu();
+        }
       } else if (!settings_menu_container) {
         createSettingsMenu();
       };
@@ -83,7 +87,11 @@ function init() {
       );
 
       if (widgets_menu_container) {
-        showWidgetsMenu();
+        if (widgets_menu_container.classList.contains('active')) {
+            hideWidgetsMenu();
+        } else if (!widgets_menu_container.classList.contains('active')) {
+            showWidgetsMenu();
+        }
       } else if (!widgets_menu_container) {
         createWidgetsMenu();
       };
@@ -238,6 +246,8 @@ function showWidgetsMenu() {
   } else if (widgets_menu_container && !config.animationsEnabled) {
     widgets_menu_container.remove();
   };
+
+  widgets_menu_container?.classList.add('active');
 };
 
 function hideWidgetsMenu() {
@@ -250,6 +260,8 @@ function hideWidgetsMenu() {
   } else if (widgets_menu_container && !config.animationsEnabled) {
     widgets_menu_container.remove();
   };
+
+  widgets_menu_container?.classList.remove('active');
 };
 
 function showSettingsMenu() {
@@ -262,6 +274,8 @@ function showSettingsMenu() {
   } else if (settings_menu_container && !config.animationsEnabled) {
     settings_menu_container.remove();
   };
+
+  settings_menu_container?.classList.add('active');
 };
 
 function hideSettingsMenu() {
@@ -274,6 +288,8 @@ function hideSettingsMenu() {
   } else if (settings_menu_container && !config.animationsEnabled) {
     settings_menu_container.remove();
   };
+
+  settings_menu_container?.classList.remove('active');
 };
 
 function closeAllOpened(event: MouseEvent) {
