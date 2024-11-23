@@ -1,5 +1,5 @@
 import { loadLocale, getLocalizedText } from "./utils/locales";
-import { widgets } from "./utils/widgets";
+import { widgets } from "./utils/widgetBuilder";
 import { config, settings } from "./utils/settings";
 
 document.addEventListener("DOMContentLoaded", () => {
