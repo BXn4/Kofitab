@@ -261,6 +261,7 @@ input:checked + .slider:before {
     display: block;
 }
 #menu-category-filter {
+    position: relative;
     width: 80%;
     padding: 10px;
     margin-bottom: 15px;
@@ -280,5 +281,37 @@ input:checked + .slider:before {
     stroke-width: 24px;
     margin-left: 0;
     position: absolute;
-    left: 50px;
+    left: 20px;
+}
+#menu-category-container {
+    width: 80%;
+    height: auto;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(53, 61, 65, 0.445);
+    padding: 20px;
+    z-index: 1;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    border-radius: 16px;
+}
+.category-div {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    z-index: 2;
+}
+#widgets-container {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
 }

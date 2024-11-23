@@ -2,6 +2,7 @@ import { TextWidget } from "./widgets/text";
 import { TimeWidget } from "./widgets/time";
 import { DateWidget } from "./widgets/date";
 import { SearchWidget } from "./widgets/search";
+import { CategoryFilterWidget } from "./widgets/filter";
 
 interface Widget {
     type: WidgetType;
@@ -58,8 +59,8 @@ function getWidgets(category: WidgetCategory): Widget[] {
     if (category === WidgetCategory.All) {
         return Widgets;
     };
-    
+
     return Widgets.filter(widget => widget.category === category);
 };
 
-export { getWidgets, WidgetCategory };
+export { getWidgets, WidgetCategory, CategoryFilterWidget };

@@ -1,5 +1,5 @@
 import { loadLocale, getLocalizedText } from "./utils/locales";
-import { getWidgets, WidgetCategory } from "./utils/widgetBuilder";
+import { getWidgets, WidgetCategory, CategoryFilterWidget } from "./utils/widgetBuilder";
 import { config, settings } from "./utils/settings";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -100,8 +100,8 @@ function init() {
 };
 
 function createWidgetArea(id: number) {
-  const widget_area = document.createElement('div');
-  widget_area.className = 'widget-area';
+  const widget_area = document.createElement("div");
+  widget_area.className = "widget-area";
   widget_area.id = `widget-area-${id}`;
 
   // widget_area.innerHTML = `<p class="text">${id}</p>`;
@@ -127,30 +127,24 @@ function createWidgetsMenu() {
   comment.className = "menu-comment text";
   comment.textContent = "Just drag and drop widgets!";
 
-  const menu_category_filter = document.createElement("div");
-  menu_category_filter.id = "menu-category-filter";
-  menu_category_filter.className = "text";
-  menu_category_filter.textContent = WidgetCategory.All;
+  const menu_category_filter = CategoryFilterWidget(WidgetCategory.All);
 
-  const namescape = "http://www.w3.org/2000/svg";
-  const icon = document.createElementNS(namescape, "svg");
-  icon.setAttribute("xmlns", namescape);
-  icon.setAttribute("viewBox", "0 0 512 512");
-  icon.setAttribute("width", "24");
-  icon.setAttribute("height", "24");
-  const path = document.createElementNS(namescape, "path");
-  path.setAttribute(
-    "d",
-    "M3.9 54.9C10.5 40.9 24.5 32 40 32l432 0c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9 320 448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6l0-79.1L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"
-  );
-  icon.appendChild(path);
+  menu_category_filter.onclick = () => {
+    const menu_category_container = document.getElementById("menu-category-container");
+    if (menu_category_container) {
+      menu_category_container.remove();
+    } else if (!menu_category_container) {
+      showWidgetsCategory();
+    };
+  };
 
-  menu_category_filter.appendChild(icon);
+  const widgets_container = document.createElement("div");
+  widgets_container.id = "widgets-container";
 
   widgets_menu_container.appendChild(title);
   widgets_menu_container.appendChild(comment);
   widgets_menu_container.appendChild(menu_category_filter);
-
+  
   getWidgets(WidgetCategory.All).forEach((widget) => {
     const widget_object = document.createElement("div");
     widget_object.classList.add(widget.className);
@@ -162,10 +156,10 @@ function createWidgetsMenu() {
       e.dataTransfer?.setData("text", widget.type);
       widget_object.style.opacity = "0.3";
 
-      const widget_areas = document.querySelectorAll('.widget-area');
+      const widget_areas = document.querySelectorAll(".widget-area");
 
       widget_areas.forEach(widget => {
-          widget.className = 'widget-area-visible';
+          widget.className = "widget-area-visible";
       });
 
       const cancel_widget_drag = document.createElement("div");
@@ -184,10 +178,10 @@ function createWidgetsMenu() {
     widget_object.addEventListener("dragend", () => {
       widget_object.style.opacity = "1";
 
-      const widget_areas = document.querySelectorAll('.widget-area-visible');
+      const widget_areas = document.querySelectorAll(".widget-area-visible");
 
       widget_areas.forEach(widget => {
-          widget.className = 'widget-area';
+          widget.className = "widget-area";
       });
 
       const cancel_widget_drag = document.getElementById("cancel-widget-drag");
@@ -197,8 +191,10 @@ function createWidgetsMenu() {
       showWidgetsMenu();
     });
 
-    widgets_menu_container.appendChild(widget_object);
+    widgets_container.appendChild(widget_object);
   });
+
+  widgets_menu_container.appendChild(widgets_container);
 
   document.body.appendChild(widgets_menu_container);
 };
@@ -297,5 +293,85 @@ function closeAllOpened(event: MouseEvent) {
     if (settings_menu_container) {
       hideSettingsMenu();
     };
+  };
+};
+
+function showWidgetsCategory() {
+  const menu_category_filter = document.getElementById("menu-category-filter");
+
+  if (menu_category_filter) {
+    const menu_category_container = document.createElement("div");
+    menu_category_container.id = "menu-category-container";
+    menu_category_container.className = "show-menu-category-container";
+    menu_category_filter.append(menu_category_container);
+
+    Object.values(WidgetCategory).forEach(category => {
+      const category_div = document.createElement("div");
+      category_div.className = "category-div";
+      category_div.innerText = getLocalizedText(category);
+
+      category_div.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+
+      category_div.addEventListener("click", () => {
+        const widgets_container = document.getElementById("widgets-container");
+        if (widgets_container) {
+          widgets_container.innerHTML = "";
+          CategoryFilterWidget(category);
+          menu_category_container.remove();
+          
+          getWidgets(category).forEach((widget) => {
+            const widget_object = document.createElement("div");
+            widget_object.classList.add(widget.className);
+            widget_object.innerHTML = widget.content;
+            widget_object.style.userSelect = "none";
+            widget_object.setAttribute("draggable", "true");
+        
+            widget_object.addEventListener("dragstart", (e) => {
+              e.dataTransfer?.setData("text", widget.type);
+              widget_object.style.opacity = "0.3";
+        
+              const widget_areas = document.querySelectorAll(".widget-area");
+        
+              widget_areas.forEach(widget => {
+                  widget.className = "widget-area-visible";
+              });
+        
+              const cancel_widget_drag = document.createElement("div");
+              cancel_widget_drag.id = "cancel-widget-drag";
+        
+              const drag_drop_remove = document.createElement("p");
+              drag_drop_remove.textContent = "Drag and drop here to remove the widget";
+              drag_drop_remove.className = "text";
+        
+              cancel_widget_drag.appendChild(drag_drop_remove);
+              document.body.appendChild(cancel_widget_drag);
+        
+              hideWidgetsMenu();
+            });
+        
+            widget_object.addEventListener("dragend", () => {
+              widget_object.style.opacity = "1";
+        
+              const widget_areas = document.querySelectorAll(".widget-area-visible");
+        
+              widget_areas.forEach(widget => {
+                  widget.className = "widget-area";
+              });
+        
+              const cancel_widget_drag = document.getElementById("cancel-widget-drag");
+              
+              cancel_widget_drag?.remove();
+        
+              showWidgetsMenu();
+            });
+        
+            widgets_container.appendChild(widget_object);
+          });
+        };
+      });
+      menu_category_container.appendChild(category_div);
+    });
   };
 };
