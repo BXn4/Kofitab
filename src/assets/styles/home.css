@@ -239,6 +239,9 @@ input:checked + .slider:before {
 .widget-area-visible {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
+.widget-area-selected {
+    border: 1px solid rgb(255, 255, 255);
+}
 #cancel-widget-drag {
     position: absolute;
     bottom: 0%;
@@ -307,6 +310,9 @@ input:checked + .slider:before {
     margin-bottom: 10px;
     cursor: pointer;
     z-index: 2;
+    box-shadow: 0 4px 8px rgba(36, 46, 51, 0.5);
+    background-color: rgba(30, 35, 37, 0.3);
+    transition: all 0.3s ease-in-out;
 }
 #widgets-container {
     width: fit-content;

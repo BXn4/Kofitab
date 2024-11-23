@@ -4,7 +4,7 @@
 button:active {
   transform: scale(1.1);
 }
-.widget-box:hover {
+.widget-box:hover, .category-div:hover {
   transform: translateX(-5px);
 }
 input:checked + .slider:before {
