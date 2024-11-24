@@ -1,6 +1,6 @@
 import { loadLocale, getLocalizedText } from "./utils/locales";
 import { getWidgets, WidgetCategory, CategoryFilterWidget } from "./utils/widgetBuilder";
-import { config, settings } from "./utils/settings";
+import { Settings, isEnabled, getValue, updateSetting } from "./utils/settings";
 
 document.addEventListener("DOMContentLoaded", () => {
   init();
@@ -10,17 +10,20 @@ function init() {
   const background = document.getElementById("background");
 
   if (background) {
-    background.setAttribute("src", config.background);
+    const value = getValue(Settings.Background);
+    if (value) {
+    background.setAttribute("src", value);
+    };
   };
 
-  if (config.animationsEnabled) {
+  if (isEnabled(Settings.EnableAnimations)) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = "./assets/styles/animations.css";
     document.head.appendChild(link);
   };
 
-  if (config.settingsButtonVisible) {
+  if (isEnabled(Settings.SettingsButtonVisible)) {
     const settings_button = document.createElement("button");
     settings_button.id = "settings-button";
 
@@ -60,7 +63,7 @@ function init() {
     document.body.appendChild(settings_button);
   };
 
-  if (config.widgetsButtonVisible) {
+  if (isEnabled(Settings.WidgetsButtonVisible)) {
     const widgets_button = document.createElement("button");
     widgets_button.id = "widgets-button";
 
@@ -223,16 +226,6 @@ function createSettingsMenu() {
   settings_menu_container.appendChild(title);
   settings_menu_container.appendChild(comment);
 
-  settings.forEach((setting) => {
-    const settings_object = document.createElement("div");
-    settings_object.classList.add(setting.className);
-    settings_object.innerHTML = setting.content;
-    settings_object.style.userSelect = "none";
-    settings_object.setAttribute("draggable", "true");
-
-    settings_menu_container.appendChild(settings_object);
-  });
-
   document.body.appendChild(settings_menu_container);
 };
 
@@ -241,9 +234,9 @@ function showWidgetsMenu() {
     "widgets-menu-container"
   );
 
-  if (widgets_menu_container && config.animationsEnabled) {
+  if (widgets_menu_container && isEnabled(Settings.EnableAnimations)) {
     widgets_menu_container.className = "show-widgets-menu-container";
-  } else if (widgets_menu_container && !config.animationsEnabled) {
+  } else if (widgets_menu_container && !isEnabled(Settings.EnableAnimations)) {
     widgets_menu_container.remove();
   };
 
@@ -255,9 +248,9 @@ function hideWidgetsMenu() {
     "widgets-menu-container"
   );
 
-  if (widgets_menu_container && config.animationsEnabled) {
+  if (widgets_menu_container && isEnabled(Settings.EnableAnimations)) {
     widgets_menu_container.className = "hide-widgets-menu-container";
-  } else if (widgets_menu_container && !config.animationsEnabled) {
+  } else if (widgets_menu_container && !isEnabled(Settings.EnableAnimations)) {
     widgets_menu_container.remove();
   };
 
@@ -269,9 +262,9 @@ function showSettingsMenu() {
     "settings-menu-container"
   );
 
-  if (settings_menu_container && config.animationsEnabled) {
+  if (settings_menu_container && isEnabled(Settings.EnableAnimations)) {
     settings_menu_container.className = "show-settings-menu-container";
-  } else if (settings_menu_container && !config.animationsEnabled) {
+  } else if (settings_menu_container && !isEnabled(Settings.EnableAnimations)) {
     settings_menu_container.remove();
   };
 
@@ -283,9 +276,9 @@ function hideSettingsMenu() {
     "settings-menu-container"
   );
 
-  if (settings_menu_container && config.animationsEnabled) {
+  if (settings_menu_container && isEnabled(Settings.EnableAnimations)) {
     settings_menu_container.className = "hide-settings-menu-container";
-  } else if (settings_menu_container && !config.animationsEnabled) {
+  } else if (settings_menu_container && !isEnabled(Settings.EnableAnimations)) {
     settings_menu_container.remove();
   };
 

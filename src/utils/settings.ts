@@ -1,55 +1,81 @@
 interface Setting {
+    setting: Settings;
+    category: SettingsCategory;
+    enabled: boolean;
     type: SettingType;
-    className: string;
-    content: string;
+    value?: string;
+};
+
+enum Settings {
+    EnableAnimations = "enable_animations",
+    SettingsButtonVisible = "settings_button_visible",
+    WidgetsButtonVisible = "widgets_button_visible",
+    Background = "background",
+};
+
+enum SettingsCategory {
+    General = "General",
 };
 
 enum SettingType {
-    Text = "Text",
     Toggle = "Toggle",
+    Input = "Input"
 };
 
-enum SettingContent {
-    Text = '<p class="text">Object</p>',
-    Toggle = '<label class="switch"><input type="checkbox" class="checkbox" id="{id}" checked><span class="slider round"></span></label>',
-};
+// DEFAULT
+const configuration: Setting[] = [
+    {
+        setting: Settings.EnableAnimations,
+        category: SettingsCategory.General,
+        enabled: true,
+        type: SettingType.Toggle,
+    },
+    {
+        setting: Settings.SettingsButtonVisible,
+        category: SettingsCategory.General,
+        enabled: true,
+        type: SettingType.Toggle,
+    },
+    {
+        setting: Settings.WidgetsButtonVisible,
+        category: SettingsCategory.General,
+        enabled: true,
+        type: SettingType.Toggle,
+    },
+    {
+        setting: Settings.Background,
+        category: SettingsCategory.General,
+        enabled: true,
+        type: SettingType.Input,
+        value: "./assets/images/backgrounds/default.jpg"
+    },
+];
 
-const config = {
-    animationsEnabled: true,
-    settingsButtonVisible: true,
-    widgetsButtonVisible: true,
-    background: "./assets/images/backgrounds/default.jpg",
-};
+function updateSetting(setting: Settings, value: boolean | string) {
+    const config = configuration.find((s) => s.setting === setting);
+    if (config) {
+        if (typeof value == 'boolean') {
+            config.enabled = value;
+        };
 
-function createToggle(id: string, checked: boolean): string {
-    const toggle = SettingContent.Toggle;
-    return toggle.replace('{id}', id).replace('checked', checked ? 'checked' : ''); 
-};
-
-function createSettings(key: string, value: any): string {
-    let textContent = '';
-    switch (key) {
-        case "animationsEnabled":
-            textContent = `Enable animations: ${createToggle(key, value)}`;
-            break;
-        case "settingsButtonVisible":
-            textContent = `Hide settings icon: ${createToggle(key, value)}`;
-            break;
-        case "widgetsButtonVisible":
-            textContent = `Hide widgets button: ${createToggle(key, value)}`;
-            break;
-        case "background":
-            textContent = `${key}: ${value}`;
-            break;
+        if (typeof value == 'string') {
+            config.value = value;
+        };
     };
-
-    return `<p class="text">${textContent}</p>`;
 };
 
-const settings: Setting[] = Object.entries(config).map(([key, value]) => ({
-    type: SettingType.Text,
-    className: "setting-box",
-    content: createSettings(key, value),
-}));
+function isEnabled(settings: Settings) {
+    const setting = configuration.find((s) => s.setting === settings);
+    if (setting) {
+        return setting.enabled;
+    };
+};
 
-export { config, settings };
+function getValue(settings: Settings) {
+    const setting = configuration.find((s) => s.setting === settings);
+    if (setting) {
+        return setting.value;
+    };
+};
+
+export { SettingType, SettingsCategory, Settings, isEnabled, getValue, updateSetting };
