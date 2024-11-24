@@ -5,6 +5,7 @@ import { SearchWidget } from "./widgets/search";
 import { CategoryFilterWidget } from "./widgets/filter";
 
 interface Widget {
+    id: WidgetID;
     type: WidgetType;
     category: WidgetCategory;
     className: string;
@@ -28,26 +29,37 @@ enum WidgetCategory {
     Media = "Media",
 };
 
+enum WidgetID {
+    BasicText = "BasicText",
+    BasicTime = "BasicTime",
+    BasicDate = "BasicDate",
+    BasicSearh = "BasicSearch",
+};
+
 const Widgets: Widget[] = [
     {
+        id: WidgetID.BasicText,
         type: WidgetType.Text,
         category: WidgetCategory.Text,
         className: "widget-box",
         content: TextWidget,
     },
     {
+        id: WidgetID.BasicTime,
         type: WidgetType.Time,
         category: WidgetCategory.Time,
         className: "widget-box",
         content: TimeWidget,
     },
     {
+        id: WidgetID.BasicDate,
         type: WidgetType.Date,
         category: WidgetCategory.Date,
         className: "widget-box",
         content: DateWidget,
     },
     {
+        id: WidgetID.BasicSearh,
         type: WidgetType.Search,
         category: WidgetCategory.Search,
         className: "widget-box",
@@ -63,4 +75,4 @@ function getWidgets(category: WidgetCategory): Widget[] {
     return Widgets.filter(widget => widget.category === category);
 };
 
-export { getWidgets, WidgetCategory, CategoryFilterWidget };
+export { getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget };

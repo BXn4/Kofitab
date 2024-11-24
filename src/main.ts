@@ -1,5 +1,5 @@
 import { loadLocale, getLocalizedText } from "./utils/locales";
-import { getWidgets, WidgetCategory, CategoryFilterWidget } from "./utils/widgetBuilder";
+import { getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget } from "./utils/widgetBuilder";
 import { Settings, isEnabled, getValue, updateSetting } from "./utils/settings";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -50,9 +50,9 @@ function init() {
       );
 
       if (settings_menu_container) {
-        if (settings_menu_container.classList.contains('active')) {
+        if (settings_menu_container.classList.contains("active")) {
             hideSettingsMenu();
-        } else if (!settings_menu_container.classList.contains('active')) {
+        } else if (!settings_menu_container.classList.contains("active")) {
             showSettingsMenu();
         }
       } else if (!settings_menu_container) {
@@ -90,9 +90,9 @@ function init() {
       );
 
       if (widgets_menu_container) {
-        if (widgets_menu_container.classList.contains('active')) {
+        if (widgets_menu_container.classList.contains("active")) {
             hideWidgetsMenu();
-        } else if (!widgets_menu_container.classList.contains('active')) {
+        } else if (!widgets_menu_container.classList.contains("active")) {
             showWidgetsMenu();
         }
       } else if (!widgets_menu_container) {
@@ -123,7 +123,6 @@ function createWidgetArea(id: number) {
     widgets_overlay.appendChild(widget_area);
   };
 };
-
 
 function createWidgetsMenu() {
   const widgets_menu_container = document.createElement("div");
@@ -163,43 +162,14 @@ function createWidgetsMenu() {
     widget_object.style.userSelect = "none";
     widget_object.setAttribute("draggable", "true");
 
-    widget_object.addEventListener("dragstart", (e) => {
-      e.dataTransfer?.setData("text", widget.type);
-      widget_object.style.opacity = "0.3";
-
-      const widget_areas = document.querySelectorAll(".widget-area");
-
-      widget_areas.forEach(widget => {
-          widget.className = "widget-area-visible";
-      });
-
-      const cancel_widget_drag = document.createElement("div");
-      cancel_widget_drag.id = "cancel-widget-drag";
-
-      const drag_drop_remove = document.createElement("p");
-      drag_drop_remove.textContent = "Drag and drop here to remove the widget";
-      drag_drop_remove.className = "text";
-
-      cancel_widget_drag.appendChild(drag_drop_remove);
-      document.body.appendChild(cancel_widget_drag);
-
-      hideWidgetsMenu();
+    widget_object.addEventListener("dragstart", () => {
+      widgetDrag(widget_object, widget.id);
     });
 
     widget_object.addEventListener("dragend", () => {
       widget_object.style.opacity = "1";
 
-      const widget_areas = document.querySelectorAll(".widget-area-visible");
-
-      widget_areas.forEach(widget => {
-          widget.className = "widget-area";
-      });
-
-      const cancel_widget_drag = document.getElementById("cancel-widget-drag");
-      
-      cancel_widget_drag?.remove();
-
-      showWidgetsMenu();
+      exitWidgetEditor();
     });
 
     widgets_container.appendChild(widget_object);
@@ -240,7 +210,7 @@ function showWidgetsMenu() {
     widgets_menu_container.remove();
   };
 
-  widgets_menu_container?.classList.add('active');
+  widgets_menu_container?.classList.add("active");
 };
 
 function hideWidgetsMenu() {
@@ -254,7 +224,7 @@ function hideWidgetsMenu() {
     widgets_menu_container.remove();
   };
 
-  widgets_menu_container?.classList.remove('active');
+  widgets_menu_container?.classList.remove("active");
 };
 
 function showSettingsMenu() {
@@ -268,7 +238,7 @@ function showSettingsMenu() {
     settings_menu_container.remove();
   };
 
-  settings_menu_container?.classList.add('active');
+  settings_menu_container?.classList.add("active");
 };
 
 function hideSettingsMenu() {
@@ -282,7 +252,7 @@ function hideSettingsMenu() {
     settings_menu_container.remove();
   };
 
-  settings_menu_container?.classList.remove('active');
+  settings_menu_container?.classList.remove("active");
 };
 
 function closeAllOpened(event: MouseEvent) {
@@ -337,43 +307,14 @@ function showWidgetsCategory() {
             widget_object.style.userSelect = "none";
             widget_object.setAttribute("draggable", "true");
         
-            widget_object.addEventListener("dragstart", (e) => {
-              e.dataTransfer?.setData("text", widget.type);
-              widget_object.style.opacity = "0.3";
-        
-              const widget_areas = document.querySelectorAll(".widget-area");
-        
-              widget_areas.forEach(widget => {
-                  widget.className = "widget-area-visible";
-              });
-        
-              const cancel_widget_drag = document.createElement("div");
-              cancel_widget_drag.id = "cancel-widget-drag";
-        
-              const drag_drop_remove = document.createElement("p");
-              drag_drop_remove.textContent = "Drag and drop here to remove the widget";
-              drag_drop_remove.className = "text";
-        
-              cancel_widget_drag.appendChild(drag_drop_remove);
-              document.body.appendChild(cancel_widget_drag);
-        
-              hideWidgetsMenu();
+            widget_object.addEventListener("dragstart", () => {
+              widgetDrag(widget_object, widget.id);
             });
-        
+
             widget_object.addEventListener("dragend", () => {
               widget_object.style.opacity = "1";
-        
-              const widget_areas = document.querySelectorAll(".widget-area-visible");
-        
-              widget_areas.forEach(widget => {
-                  widget.className = "widget-area";
-              });
-        
-              const cancel_widget_drag = document.getElementById("cancel-widget-drag");
-              
-              cancel_widget_drag?.remove();
-        
-              showWidgetsMenu();
+
+              exitWidgetEditor();
             });
         
             widgets_container.appendChild(widget_object);
@@ -383,4 +324,67 @@ function showWidgetsCategory() {
       menu_category_container.appendChild(category_div);
     });
   };
+};
+
+function widgetDrag(widget_object: HTMLElement, widget: WidgetID) {
+  widget_object.style.opacity = "0.3";
+
+  checkWidgetSpace(widget_object);
+
+  enterWidgetEditor();
+};
+
+function enterWidgetEditor() {
+  const widget_areas = document.querySelectorAll(".widget-area");
+
+  widget_areas.forEach(widget => {
+      widget.className = "widget-area-visible";
+  });
+
+  const cancel_widget_drag = document.createElement("div");
+  cancel_widget_drag.id = "cancel-widget-drag";
+
+  const drag_drop_remove = document.createElement("p");
+  drag_drop_remove.textContent = "Drag and drop here to remove the widget";
+  drag_drop_remove.className = "text";
+
+  cancel_widget_drag.appendChild(drag_drop_remove);
+  document.body.appendChild(cancel_widget_drag);
+
+  hideWidgetsMenu();
+};
+
+function exitWidgetEditor() {
+  const widget_areas = document.querySelectorAll(".widget-area-visible");
+        
+  widget_areas.forEach(widget => {
+    widget.className = "widget-area";
+    // Fastest way to remove all event listeners
+    // https://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
+    widget.replaceWith(widget.cloneNode(true));
+  });
+        
+  const cancel_widget_drag = document.getElementById("cancel-widget-drag");
+              
+  cancel_widget_drag?.remove();
+  
+  showWidgetsMenu();
+};
+
+function checkWidgetSpace(widget: HTMLElement) {
+  const widget_areas = document.querySelectorAll<HTMLElement>(".widget-area");
+
+  widget_areas.forEach(widget_area => {
+    function dragWidgetOver(e: DragEvent) {
+      e.preventDefault();
+    };
+
+    function dropWidget(e: DragEvent) {
+      console.log(widget_area);
+      e.preventDefault();
+    };
+
+    widget_area.addEventListener("dragover", dragWidgetOver);
+    widget_area.addEventListener("drop", dropWidget);
+  });
 };
