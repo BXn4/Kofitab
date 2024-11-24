@@ -1,5 +1,5 @@
 import { WidgetCategory } from "../widgetBuilder";
-import { getLocalizedText } from "../../../../utils/locales";
+import { getLocalizedText } from "../../../utils/locales"
 
 export function CategoryFilterWidget(category: WidgetCategory) {
   let menu_category_filter = document.getElementById("menu-category-filter");

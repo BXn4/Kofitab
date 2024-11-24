@@ -10,7 +10,24 @@ interface Widget {
     category: WidgetCategory;
     className: string;
     content: string;
+    style?: WidgetStyle;
 };
+
+interface WidgetStyle {
+    font?: string;
+    font_size?: number;
+    font_weight?: string;
+    font_style?: "normal" | "italic" | "oblique"
+    color?: string;
+    background_color?: string;
+    text_align?: "left" | "center" | "right",
+    border?: string;
+    border_radius?: number;
+    box_shadow?: string;
+    width?: string;
+    height?: string;
+    opacity?: number;
+}
 
 enum WidgetType {
     Text = "Text",
