@@ -1,8 +1,8 @@
-import { TextWidget } from "./widgets/text";
-import { TimeWidget } from "./widgets/time";
-import { DateWidget } from "./widgets/date";
-import { SearchWidget } from "./widgets/search";
-import { CategoryFilterWidget } from "./widgets/filter";
+import { TextWidget } from "./components/text";
+import { TimeWidget } from "./components/time";
+import { DateWidget } from "./components/date";
+import { SearchWidget } from "./components/search";
+import { CategoryFilterWidget } from "./components/filter";
 
 interface Widget {
     id: WidgetID;

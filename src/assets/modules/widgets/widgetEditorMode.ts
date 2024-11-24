@@ -1,4 +1,4 @@
-import { hideWidgetsMenu, showWidgetsMenu } from "../main"
+import { hideWidgetsMenu, showWidgetsMenu } from "../../../main"
 import { WidgetID } from "./widgetBuilder";
 
 function widgetDrag(widget_object: HTMLElement, widget: WidgetID) {

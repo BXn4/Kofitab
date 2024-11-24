@@ -1,6 +1,6 @@
 import { loadLocale, getLocalizedText } from "./utils/locales";
-import { getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget } from "./utils/widgetBuilder";
-import { widgetDrag, checkWidgetSpace, enterWidgetEditor, exitWidgetEditor } from "./utils/widgetEditorMode"
+import { getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget } from "./assets/modules/widgets/widgetBuilder";
+import { widgetDrag, checkWidgetSpace, enterWidgetEditor, exitWidgetEditor } from "./assets/modules/widgets/widgetEditorMode"
 import { Settings, isEnabled, getValue, updateSetting } from "./utils/settings";
 
 document.addEventListener("DOMContentLoaded", () => {
