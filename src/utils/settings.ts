@@ -1,12 +1,13 @@
 interface Setting {
     setting: Settings;
-    category: SettingsCategory;
+    category?: SettingsCategory;
     enabled: boolean;
-    type: SettingType;
+    type?: SettingType;
     value?: string;
 };
 
 enum Settings {
+    FirstStart = "first_start",
     EnableAnimations = "enable_animations",
     SettingsButtonVisible = "settings_button_visible",
     WidgetsButtonVisible = "widgets_button_visible",
@@ -24,6 +25,10 @@ enum SettingType {
 
 // DEFAULT
 const configuration: Setting[] = [
+    {
+        setting: Settings.FirstStart,
+        enabled: true,
+    },
     {
         setting: Settings.EnableAnimations,
         category: SettingsCategory.General,

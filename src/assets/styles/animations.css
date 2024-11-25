@@ -16,6 +16,9 @@ input:checked + .slider:before {
 .slider:before {
   transition: 0.4s;
 }
+#first-start-title {
+  animation: text-focus-in 1s linear 0s 1 normal none;
+}
 @keyframes slide-in-lr {
   from {
       transform: translateX(-100%);
@@ -57,4 +60,14 @@ input:checked + .slider:before {
       opacity: 1;
       transform: scale(1);
  }
+}
+@keyframes text-focus-in {
+  0% {
+    filter:blur(12px);
+    opacity:0;
+  }
+  100% {
+    filter:blur(0);
+    opacity:1;
+  }
 }

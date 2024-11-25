@@ -51,15 +51,22 @@ function widgetDrag(widget_object: HTMLElement, widget: WidgetID) {
   
     widget_areas.forEach(widget_area => {
       function dragWidgetOver(e: DragEvent) {
+        widget_area.className = "widget-area-selected";
         e.preventDefault();
+      };
+
+      function dragWidgetOverLeave(e: DragEvent) {
+        widget_area.className = ("widget-area-visible");
       };
   
       function dropWidget(e: DragEvent) {
         console.log(widget_area);
+        widget_area.className = ("widget-area-visible");
         e.preventDefault();
       };
   
       widget_area.addEventListener("dragover", dragWidgetOver);
+      widget_area.addEventListener("dragleave", dragWidgetOverLeave);
       widget_area.addEventListener("drop", dropWidget);
     });
   };

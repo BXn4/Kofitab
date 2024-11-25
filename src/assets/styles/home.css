@@ -226,7 +226,9 @@ input:checked + .slider:before {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .widget-area-selected {
-    border: 1px solid rgb(255, 255, 255);
+    border: 5px solid rgb(255, 255, 255);
+    border-radius: 12px;
+    backdrop-filter: (2px);
 }
 #cancel-widget-drag {
     position: absolute;
@@ -263,7 +265,6 @@ input:checked + .slider:before {
     align-items: center;
     justify-content: center;
 }
-
 #menu-category-filter svg {
     fill: rgba(190, 190, 190, 0.5);
     stroke: white;
@@ -306,4 +307,26 @@ input:checked + .slider:before {
     flex-direction: column;
     align-items: center;
     user-select: none;
+}
+#first-start-container {
+    position: absolute;
+    background-color: rgba(53, 61, 65, 0.3);
+    width: 70%;
+    height: 70%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    z-index: 2;
+    box-sizing: border-box;
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+}
+#first-start-title {
+    font-size: 24px;
 }

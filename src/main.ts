@@ -17,6 +17,21 @@ function init() {
     };
   };
 
+  /* if (isEnabled(Settings.FirstStart)) {
+    const first_start_container = document.createElement("div");
+    first_start_container.id = "first-start-container";
+
+    const welcome_title = document.createElement("p");
+    welcome_title.id = "first-start-title";
+    welcome_title.textContent = "Welcome to Kofizen!";
+    welcome_title.className = "text";
+
+    first_start_container.appendChild(welcome_title);
+
+    document.body.appendChild(first_start_container);
+
+  }; */
+
   if (isEnabled(Settings.EnableAnimations)) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
