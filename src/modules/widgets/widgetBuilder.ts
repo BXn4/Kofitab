@@ -1,4 +1,4 @@
-import { TextWidget } from "./components/text";
+import { TextWidget, BasicTextStyle } from "./components/text";
 import { TimeWidget } from "./components/time";
 import { DateWidget } from "./components/date";
 import { SearchWidget } from "./components/search";
@@ -15,7 +15,7 @@ interface Widget {
 
 interface WidgetStyle {
     font?: string;
-    font_size?: number;
+    font_size?: string;
     font_weight?: string;
     font_style?: "normal" | "italic" | "oblique"
     color?: string;
@@ -60,6 +60,7 @@ const Widgets: Widget[] = [
         category: WidgetCategory.Text,
         className: "widget-box",
         content: TextWidget,
+        style: BasicTextStyle,
     },
     {
         id: WidgetID.BasicTime,
@@ -92,4 +93,4 @@ function getWidgets(category: WidgetCategory): Widget[] {
     return Widgets.filter(widget => widget.category === category);
 };
 
-export { getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget };
+export { Widgets,  getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget, WidgetStyle };

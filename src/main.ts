@@ -1,6 +1,6 @@
 import { loadLocale, getLocalizedText } from "./utils/locales";
-import { getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget } from "./modules/widgets/widgetBuilder";
-import { widgetDrag, checkWidgetSpace, enterWidgetEditor, exitWidgetEditor } from "./modules/widgets/widgetEditorMode"
+import { getWidgets, WidgetCategory, CategoryFilterWidget } from "./modules/widgets/widgetBuilder";
+import { widgetDrag } from "./modules/widgets/widgetEditorMode"
 import { Settings, isEnabled, getValue, updateSetting } from "./utils/settings";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -179,13 +179,7 @@ function createWidgetsMenu() {
     widget_object.setAttribute("draggable", "true");
 
     widget_object.addEventListener("dragstart", () => {
-      widgetDrag(widget_object, widget.id);
-    });
-
-    widget_object.addEventListener("dragend", () => {
-      widget_object.style.opacity = "1";
-
-      exitWidgetEditor();
+      widgetDrag(widget.id, widget_object);
     });
 
     widgets_container.appendChild(widget_object);
@@ -324,13 +318,7 @@ function showWidgetsCategory() {
             widget_object.setAttribute("draggable", "true");
         
             widget_object.addEventListener("dragstart", () => {
-              widgetDrag(widget_object, widget.id);
-            });
-
-            widget_object.addEventListener("dragend", () => {
-              widget_object.style.opacity = "1";
-
-              exitWidgetEditor();
+              widgetDrag(widget.id, widget_object);
             });
         
             widgets_container.appendChild(widget_object);
