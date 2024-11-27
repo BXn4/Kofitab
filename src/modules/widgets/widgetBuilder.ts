@@ -1,6 +1,6 @@
 import { TextWidget, BasicTextStyle } from "./components/text";
-import { TimeWidget } from "./components/time";
-import { DateWidget } from "./components/date";
+import { TimeWidget, BasicTimeStyle } from "./components/time";
+import { DateWidget, BasicDateStyle } from "./components/date";
 import { SearchWidget } from "./components/search";
 import { CategoryFilterWidget } from "./components/filter";
 
@@ -14,10 +14,18 @@ interface Widget {
 };
 
 interface WidgetStyle {
-    font?: string;
+    font_family?: string;
     font_size?: string;
     font_weight?: string;
-    font_style?: "normal" | "italic" | "oblique"
+    font_style?: "normal" | "italic" | "oblique",
+    position?: string,
+    display?: string,
+    justify_content?: string,
+    align_items?: string,
+    top?: string,
+    bottom?: string,
+    left?: string,
+    right?: string,
     color?: string;
     background_color?: string;
     text_align?: "left" | "center" | "right",
@@ -68,6 +76,7 @@ const Widgets: Widget[] = [
         category: WidgetCategory.Time,
         className: "widget-box",
         content: TimeWidget,
+        style: BasicTimeStyle,
     },
     {
         id: WidgetID.BasicDate,
@@ -75,6 +84,7 @@ const Widgets: Widget[] = [
         category: WidgetCategory.Date,
         className: "widget-box",
         content: DateWidget,
+        style: BasicDateStyle,
     },
     {
         id: WidgetID.BasicSearh,

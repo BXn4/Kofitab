@@ -89,15 +89,22 @@ function renderWidget(widgetID: WidgetID, area: HTMLElement) {
   if (widget) {
       console.log(`Rendering widget: ${widget.id} over: ${area.id}`);
 
+      const new_widget = document.createElement('div');
+      new_widget.id = `${widget.id}-${new Date().getTime().toString()}`;
+
       if (widget.style) {
         Object.entries(widget.style).forEach(([key, value]) => {
             if (value) {
-                (area.style as any)[key.replace("_", "-")] = value.toString();
+                (new_widget.style as any)[key.replace("_", "-")] = value.toString();
             };
         });
     };
 
-      area.innerHTML = widget.content;
+    area.innerHTML = "";
+
+    new_widget.innerHTML = widget.content;
+
+    area.appendChild(new_widget);
   };
 };
 

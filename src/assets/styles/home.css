@@ -143,6 +143,7 @@ button {
 .widget-box p {
     margin: 0;
     font-size: 24px;
+    color: #ffffff;
 }
 .widget-box:hover {
     box-shadow: 0 8px 16px rgba(36, 46, 51, 0.8);
