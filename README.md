@@ -1,3 +1,3 @@
 # Kofizen
 Your new homescreen
-![preview](https://github.com/user-attachments/assets/d68c89b3-cd18-4adc-bb3d-184c4575828d)
+![preview](https://github.com/user-attachments/assets/8270f408-6f7c-4dd8-aec4-09e3a751e452)
