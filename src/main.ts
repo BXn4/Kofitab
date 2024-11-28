@@ -176,8 +176,8 @@ function createWidgetsMenu() {
   widgets_editor_mode.textContent = "Editor";
 
   widgets_editor_mode.onclick = () => {
-    enterWidgetEditor();
     editorMode(true);
+    enterWidgetEditor();
   };
 
   menu_bottom_area.appendChild(widgets_editor_mode);

@@ -20,9 +20,9 @@ function widgetDrag(widgetID: WidgetID, widget_object: HTMLElement) {
 };
 
 function enterWidgetEditor() {
-  if (editor_mode) {
+  if (document.getElementById("exit-widgets-editor-mode")) {
     return;
-  }; 
+  };
 
   const widget_areas = document.querySelectorAll(".widget-area");
 
@@ -41,18 +41,20 @@ function enterWidgetEditor() {
 
   const overlay_top_area = document.createElement("div");
   overlay_top_area.id = "overlay-top-area";
+
+  if (editor_mode) {
+    const widgets_editor_mode = document.createElement("button");
+    widgets_editor_mode.className = "widgets-editor-mode-button text"
+    widgets_editor_mode.id = "exit-widgets-editor-mode";
+    widgets_editor_mode.textContent = "Exit editor";
   
-  const widgets_editor_mode = document.createElement("button");
-  widgets_editor_mode.className = "widgets-editor-mode-button text"
-  widgets_editor_mode.id = "exit-widgets-editor-mode";
-  widgets_editor_mode.textContent = "Exit editor";
+    widgets_editor_mode.onclick = () => {
+      exitWidgetEditor();
+      editorMode(false);
+    };
 
-  widgets_editor_mode.onclick = () => {
-    exitWidgetEditor();
-    editorMode(false);
+    overlay_top_area.appendChild(widgets_editor_mode);
   };
-
-  overlay_top_area.appendChild(widgets_editor_mode);
 
   document.body.appendChild(overlay_top_area);
   document.body.appendChild(cancel_widget_drag);
