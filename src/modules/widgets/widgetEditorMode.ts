@@ -1,6 +1,8 @@
 import { hideWidgetsMenu, showWidgetsMenu } from "../../main"
 import { WidgetID, Widgets } from "./widgetBuilder";
 
+let editor_mode = false;
+
 function widgetDrag(widgetID: WidgetID, widget_object: HTMLElement) {
   widget_object.style.opacity = "0.3";
 
@@ -11,11 +13,17 @@ function widgetDrag(widgetID: WidgetID, widget_object: HTMLElement) {
   widget_object.addEventListener("dragend", () => {
       widget_object.style.opacity = "1";
 
-      exitWidgetEditor();
+      if (!editor_mode) {
+       exitWidgetEditor();
+      };
   });
 };
 
 function enterWidgetEditor() {
+  if (editor_mode) {
+    return;
+  }; 
+
   const widget_areas = document.querySelectorAll(".widget-area");
 
   widget_areas.forEach(widget => {
@@ -30,9 +38,28 @@ function enterWidgetEditor() {
   drag_drop_remove.className = "text";
 
   cancel_widget_drag.appendChild(drag_drop_remove);
+
+  const overlay_top_area = document.createElement("div");
+  overlay_top_area.id = "overlay-top-area";
+  
+  const widgets_editor_mode = document.createElement("button");
+  widgets_editor_mode.className = "widgets-editor-mode-button text"
+  widgets_editor_mode.id = "exit-widgets-editor-mode";
+  widgets_editor_mode.textContent = "Exit editor";
+
+  widgets_editor_mode.onclick = () => {
+    exitWidgetEditor();
+    editorMode(false);
+  };
+
+  overlay_top_area.appendChild(widgets_editor_mode);
+
+  document.body.appendChild(overlay_top_area);
   document.body.appendChild(cancel_widget_drag);
 
-  hideWidgetsMenu();
+  if (!editor_mode) {
+    hideWidgetsMenu();
+  };
 };
 
 function exitWidgetEditor() {
@@ -46,14 +73,19 @@ function exitWidgetEditor() {
   });
 
   const cancel_widget_drag = document.getElementById("cancel-widget-drag");
+  const widgets_editor_mode = document.getElementById("exit-widgets-editor-mode");
+
 
   cancel_widget_drag?.remove();
+  widgets_editor_mode?.remove();
 
-  showWidgetsMenu();
+  if (!editor_mode) {
+    showWidgetsMenu();
+  };
 };
 
 function checkWidgetSpace(widgetID: WidgetID, widget_object: HTMLElement) {
-  const widget_areas = document.querySelectorAll < HTMLElement > (".widget-area");
+  const widget_areas = document.querySelectorAll<HTMLElement>(".widget-area, .widget-area-visible");
 
   widget_areas.forEach(widget_area => {
       function dragWidgetOver(e: DragEvent) {
@@ -108,5 +140,8 @@ function renderWidget(widgetID: WidgetID, area: HTMLElement) {
   };
 };
 
+function editorMode(value: boolean) {
+  editor_mode = value;
+};
 
-export { widgetDrag, checkWidgetSpace, enterWidgetEditor, exitWidgetEditor }
+export { widgetDrag, checkWidgetSpace, enterWidgetEditor, exitWidgetEditor, editorMode }

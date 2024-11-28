@@ -1,6 +1,6 @@
 import { loadLocale, getLocalizedText } from "./utils/locales";
 import { getWidgets, WidgetCategory, CategoryFilterWidget } from "./modules/widgets/widgetBuilder";
-import { widgetDrag } from "./modules/widgets/widgetEditorMode"
+import { enterWidgetEditor, widgetDrag, editorMode } from "./modules/widgets/widgetEditorMode"
 import { Settings, isEnabled, getValue, updateSetting } from "./utils/settings";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -167,6 +167,21 @@ function createWidgetsMenu() {
   const widgets_container = document.createElement("div");
   widgets_container.id = "widgets-container";
 
+  const menu_bottom_area = document.createElement("div");
+  menu_bottom_area.id = "menu-bottom-area";
+
+  const widgets_editor_mode = document.createElement("button");
+  widgets_editor_mode.className = "widgets-editor-mode-button text"
+  widgets_editor_mode.id = "enter-widgets-editor-mode";
+  widgets_editor_mode.textContent = "Editor";
+
+  widgets_editor_mode.onclick = () => {
+    enterWidgetEditor();
+    editorMode(true);
+  };
+
+  menu_bottom_area.appendChild(widgets_editor_mode);
+
   widgets_menu_container.appendChild(title);
   widgets_menu_container.appendChild(comment);
   widgets_menu_container.appendChild(menu_category_filter);
@@ -186,6 +201,7 @@ function createWidgetsMenu() {
   });
 
   widgets_menu_container.appendChild(widgets_container);
+  widgets_menu_container.appendChild(menu_bottom_area);
 
   document.body.appendChild(widgets_menu_container);
 };
