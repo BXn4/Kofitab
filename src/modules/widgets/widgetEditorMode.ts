@@ -1,5 +1,7 @@
 import { hideWidgetsMenu, showWidgetsMenu } from "../../main"
-import { WidgetID, Widgets } from "./widgetBuilder";
+import { WidgetCategory, WidgetID, Widgets } from "./widgetBuilder";
+
+import { updateTime, TimeWidget } from "./components/time";
 
 let editor_mode = false;
 
@@ -123,22 +125,29 @@ function renderWidget(widgetID: WidgetID, area: HTMLElement) {
   if (widget) {
       console.log(`Rendering widget: ${widget.id} over: ${area.id}`);
 
+      const new_widget_id = `widget-${new Date().getTime().toString()}`;
       const new_widget = document.createElement('div');
-      new_widget.id = `${widget.id}-${new Date().getTime().toString()}`;
+      new_widget.id = new_widget_id;
 
       if (widget.style) {
-        Object.entries(widget.style).forEach(([key, value]) => {
-            if (value) {
-                (new_widget.style as any)[key.replace("_", "-")] = value.toString();
-            };
-        });
-    };
+          Object.entries(widget.style).forEach(([key, value]) => {
+              if (value) {
+                  (new_widget.style as any)[key.replace("_", "-")] = value.toString();
+              }
+          });
+      };
 
-    area.innerHTML = "";
+      area.innerHTML = "";
 
-    new_widget.innerHTML = widget.content;
-
-    area.appendChild(new_widget);
+      if (widget.category === WidgetCategory.Time) {
+        new_widget.innerHTML = TimeWidget(new_widget_id);
+        area.appendChild(new_widget);
+        updateTime(widgetID, new_widget_id);
+        setInterval(() => updateTime(widgetID, new_widget_id), 1000);
+      } else {
+        new_widget.innerHTML = widget.content;
+        area.appendChild(new_widget);
+      };
   };
 };
 

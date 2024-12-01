@@ -1,5 +1,5 @@
 import { TextWidget, BasicTextStyle } from "./components/text";
-import { TimeWidget, BasicTimeStyle } from "./components/time";
+import { TimeWidget, BasicTimeStyle, BasicTimeProperties } from "./components/time";
 import { DateWidget, BasicDateStyle } from "./components/date";
 import { SearchWidget } from "./components/search";
 import { CategoryFilterWidget } from "./components/filter";
@@ -11,6 +11,7 @@ interface Widget {
     className: string;
     content: string;
     style?: WidgetStyle;
+    properties?: WidgetProperties;
 };
 
 interface WidgetStyle {
@@ -35,7 +36,7 @@ interface WidgetStyle {
     width?: string;
     height?: string;
     opacity?: number;
-}
+};
 
 enum WidgetType {
     Text = "Text",
@@ -61,6 +62,14 @@ enum WidgetID {
     BasicSearh = "BasicSearch",
 };
 
+interface WidgetProperties {
+    Time?: {
+        timeFormat: 12 | 24;
+        separator: string;
+        showSeconds: boolean;
+    };
+};
+
 const Widgets: Widget[] = [
     {
         id: WidgetID.BasicText,
@@ -75,8 +84,9 @@ const Widgets: Widget[] = [
         type: WidgetType.Time,
         category: WidgetCategory.Time,
         className: "widget-box",
-        content: TimeWidget,
+        content: TimeWidget(),
         style: BasicTimeStyle,
+        properties: BasicTimeProperties,
     },
     {
         id: WidgetID.BasicDate,
@@ -103,4 +113,4 @@ function getWidgets(category: WidgetCategory): Widget[] {
     return Widgets.filter(widget => widget.category === category);
 };
 
-export { Widgets,  getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget, WidgetStyle };
+export { Widgets,  getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget, WidgetStyle, WidgetProperties };
