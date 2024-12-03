@@ -3,11 +3,11 @@ import { WidgetStyle, WidgetProperties, WidgetID, Widgets } from "../widgetBuild
 export const BasicTimeStyle: WidgetStyle = {
     font_family: "Caviar Dreams",
     font_size: "62px",
-    display: "flex",
     justify_content: "center",
     align_items: "center",
     text_align: "center",
     color: "white",
+    margin: "50px",
 };
 
 export const BasicTimeProperties: WidgetProperties = {

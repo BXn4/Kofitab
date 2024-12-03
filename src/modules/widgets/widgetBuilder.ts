@@ -36,6 +36,7 @@ interface WidgetStyle {
     width?: string;
     height?: string;
     opacity?: number;
+    margin?: string;
 };
 
 enum WidgetType {
