@@ -358,7 +358,7 @@ input:checked + .slider:before {
     position: fixed;
     width: 10%;
     left: 50%;
-    transform: translateX(-50%); 
+    transform: translateX(-50%);
     top: 0;
     padding: 20px;
     z-index: 2;

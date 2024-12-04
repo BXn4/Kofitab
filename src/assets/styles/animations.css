@@ -1,4 +1,4 @@
-#background {
+#background, #widgets-overlay {
   animation: fade-in 0.1s ease-in;
 }
 button:active {
@@ -63,11 +63,11 @@ input:checked + .slider:before {
 }
 @keyframes text-focus-in {
   0% {
-    filter:blur(12px);
-    opacity:0;
-  }
+      filter:blur(12px);
+      opacity:0;
+ }
   100% {
-    filter:blur(0);
-    opacity:1;
-  }
+      filter:blur(0);
+      opacity:1;
+ }
 }
