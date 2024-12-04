@@ -1,11 +1,12 @@
 import { hideWidgetsMenu, showWidgetsMenu } from "../../main"
-import { WidgetCategory, WidgetID, Widgets } from "./widgetBuilder";
+import { WidgetCategory, WidgetID, Widgets, Widget } from "./widgetBuilder";
+import { EditorIcons } from "../../utils/icons";
 
-import { updateTime, TimeWidget } from "./components/time";
+import { updateTime } from "./components/time";
 
 let editor_mode = false;
 
-function widgetDrag(widgetID: WidgetID, widget_object: HTMLElement) {
+function widgetDrag(widgetID: string, widget_object: HTMLElement) {
   widget_object.style.opacity = "0.3";
 
   checkWidgetSpace(widgetID, widget_object);
@@ -63,7 +64,42 @@ function enterWidgetEditor() {
 
   if (!editor_mode) {
     hideWidgetsMenu();
-  };
+  } else if (editor_mode) {
+    /*
+    const customization_buttons = [
+      { id: "maximize-button", icon: EditorIcons.maximize, label: "Maximize", class: "customization-maximize" },
+      { id: "minimize-button", icon: EditorIcons.minimize, label: "Minimize", class: "customization-minimize"  },
+      { id: "move-button", icon: EditorIcons.move, label: "Move", class: "customization-move" },
+      { id: "move-up-button", icon: EditorIcons.move_up, label: "Move Up", class: "customization-move-up" },
+      { id: "move-down-button", icon: EditorIcons.move_down, label: "Move Down", class: "customization-move-down" },
+      { id: "change-font-button", icon: EditorIcons.change_font, label: "Change Font", class: "customization-change-font" },
+      { id: "change-color-button", icon: EditorIcons.change_color, label: "Change Color", class: "customization-change-color" },
+      { id: "change-fill-button", icon: EditorIcons.change_background_fill, label: "Change Background Fill", class: "customization-change-fill" },
+  ];
+  
+  const widgets = document.querySelectorAll('[id^="w-"]');
+
+  widgets.forEach((widget) => {
+      const customization_container = document.createElement('div');
+      customization_container.id = "customization-container";
+
+      customization_buttons.forEach(customization => {
+          const button = document.createElement("button");
+          button.id = customization.id;
+          button.className = customization.class;
+          button.setAttribute("aria-label", customization.label);
+
+          const icon = new DOMParser().parseFromString(customization.icon, 'image/svg+xml').documentElement;
+          icon.setAttribute('width', "24");
+          icon.setAttribute('height', "24");
+          button.appendChild(icon);
+
+          customization_container.appendChild(button);
+
+          widget.appendChild(customization_container);
+      });
+  }); */
+};
 };
 
 function exitWidgetEditor() {
@@ -79,7 +115,6 @@ function exitWidgetEditor() {
   const cancel_widget_drag = document.getElementById("cancel-widget-drag");
   const widgets_editor_mode = document.getElementById("exit-widgets-editor-mode");
 
-
   cancel_widget_drag?.remove();
   widgets_editor_mode?.remove();
 
@@ -88,7 +123,7 @@ function exitWidgetEditor() {
   };
 };
 
-function checkWidgetSpace(widgetID: WidgetID, widget_object: HTMLElement) {
+function checkWidgetSpace(widgetID: string, widget_object: HTMLElement) {
   const widget_areas = document.querySelectorAll<HTMLElement>(".widget-area, .widget-area-visible");
 
   widget_areas.forEach(widget_area => {
@@ -120,12 +155,12 @@ function checkWidgetSpace(widgetID: WidgetID, widget_object: HTMLElement) {
   });
 };
 
-function renderWidget(widgetID: WidgetID, area: HTMLElement) {
+function renderWidget(widgetID: string, area: HTMLElement) {
   const widget = Widgets.find(w => w.id === widgetID);
   if (widget) {
       console.log(`Rendering widget: ${widget.id} over: ${area.id}`);
 
-      const new_widget_id = `widget-${new Date().getTime().toString()}`;
+      const new_widget_id = `w-${new Date().getTime().toString()}`;
       const new_widget = document.createElement('div');
       new_widget.id = new_widget_id;
 
@@ -139,20 +174,76 @@ function renderWidget(widgetID: WidgetID, area: HTMLElement) {
 
       area.innerHTML = "";
 
+      widget.area = area.id;
+      widget.id = new_widget.id;
+
+      saveWidget({
+          id: widget.id,
+          type: widget.type,
+          category: widget.category,
+          className: widget.className,
+          content: widget.content,
+          style: widget.style,
+          properties: widget.properties,
+          area: widget.area,
+      });
+
       if (widget.category === WidgetCategory.Time) {
-        new_widget.innerHTML = TimeWidget(new_widget_id);
-        area.appendChild(new_widget);
-        updateTime(widgetID, new_widget_id);
-        setInterval(() => updateTime(widgetID, new_widget_id), 1000);
+          area.appendChild(new_widget);
+          updateTime(widget, new_widget_id);
+          setInterval(() => updateTime(widget, new_widget_id), 1000);
       } else {
-        new_widget.innerHTML = widget.content;
-        area.appendChild(new_widget);
+          new_widget.innerHTML = widget.content;
+          area.appendChild(new_widget);
       };
   };
+};
+
+function saveWidget(widget: Widget) {
+  const widgets = JSON.parse(localStorage.getItem('widgets') || '[]');
+  widgets.push(widget);
+  localStorage.setItem('widgets', JSON.stringify(widgets));
+};
+
+function placeWidgets() {
+  const widgets: Widget[] = JSON.parse(localStorage.getItem('widgets') || '[]');
+
+  widgets.forEach((widget: Widget) => {
+    if (widget.area) {
+      const widget_area = document.getElementById(widget.area);
+
+      if (widget_area) {
+        console.log(`Placed widget: ${widget.id}, in area: ${widget.area}`);
+        
+        const new_widget = document.createElement('div');
+        new_widget.id = widget.id;
+
+        if (widget.style) {
+          Object.entries(widget.style).forEach(([key, value]) => {
+            if (value) {
+              (new_widget.style as any)[key.replace("_", "-")] = value.toString();
+            };
+          });
+        };
+
+        widget_area.innerHTML = "";
+
+        if (widget.category === WidgetCategory.Time) {
+          widget_area.appendChild(new_widget);
+          updateTime(widget, widget.id);
+          setInterval(() => updateTime(widget, widget.id), 1000);
+        } else {
+          // BAD QUICK FIX !!
+          new_widget.innerHTML = widget.content;
+          widget_area.appendChild(new_widget);
+        };
+      };
+    };
+  });
 };
 
 function editorMode(value: boolean) {
   editor_mode = value;
 };
 
-export { widgetDrag, checkWidgetSpace, enterWidgetEditor, exitWidgetEditor, editorMode }
+export { widgetDrag, checkWidgetSpace, enterWidgetEditor, exitWidgetEditor, editorMode, placeWidgets }

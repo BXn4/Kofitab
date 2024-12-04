@@ -5,13 +5,14 @@ import { SearchWidget } from "./components/search";
 import { CategoryFilterWidget } from "./components/filter";
 
 interface Widget {
-    id: WidgetID;
+    id: string;
     type: WidgetType;
     category: WidgetCategory;
     className: string;
     content: string;
     style?: WidgetStyle;
     properties?: WidgetProperties;
+    area?: string;
 };
 
 interface WidgetStyle {
@@ -114,4 +115,4 @@ function getWidgets(category: WidgetCategory): Widget[] {
     return Widgets.filter(widget => widget.category === category);
 };
 
-export { Widgets,  getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget, WidgetStyle, WidgetProperties };
+export { Widgets,  getWidgets, WidgetCategory, WidgetID, CategoryFilterWidget, WidgetStyle, WidgetProperties, Widget };

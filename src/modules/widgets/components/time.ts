@@ -1,4 +1,4 @@
-import { WidgetStyle, WidgetProperties, WidgetID, Widgets } from "../widgetBuilder"
+import { WidgetStyle, WidgetProperties, WidgetID, Widgets, Widget } from "../widgetBuilder"
 
 export const BasicTimeStyle: WidgetStyle = {
     font_family: "Caviar Dreams",
@@ -18,14 +18,12 @@ export const BasicTimeProperties: WidgetProperties = {
     },
 };
 
-function getTime(widgetID: WidgetID): string {
+function getTime(widget: Widget): string {
     const now = new Date();
     let current_hours = now.getHours();
     let current_minutes = now.getMinutes();
     let current_seconds = now.getSeconds();
     let ampm = '';
-
-    const widget = Widgets.find(w => w.id === widgetID);
 
     if (widget?.properties?.Time?.timeFormat === 12) {
         ampm = current_hours >= 12 ? 'PM' : 'AM';
@@ -39,13 +37,22 @@ function getTime(widgetID: WidgetID): string {
     return `${hour}${widget?.properties?.Time?.separator}${minute}${widget?.properties?.Time?.showSeconds ? `${widget?.properties?.Time?.separator}${second}` : ''}`;
 };
 
-function updateTime(widget: WidgetID, id: string) {
+function updateTime(widget: Widget, id: string) {
     const timeWidget = document.getElementById(id);
 
     if (timeWidget) {
-        timeWidget.innerHTML = getTime(widget);
+        let time_display = timeWidget.querySelector('.time-display');
+
+        if (!time_display) {
+            time_display = document.createElement('span');
+            time_display.className = 'time-display';
+            timeWidget.appendChild(time_display);
+        };
+
+        time_display.textContent = getTime(widget);
     };
 };
+
 
 export const TimeWidget = (id?: string): string => `<p id="${id}">12:00</p>`;
 
