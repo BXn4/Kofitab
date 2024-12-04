@@ -1,15 +1,15 @@
 import { hideWidgetsMenu, showWidgetsMenu } from "../../main"
-import { WidgetCategory, WidgetID, Widgets, Widget } from "./widgetBuilder";
+import { WidgetCategory, Widgets, Widget } from "./widgetBuilder";
 import { EditorIcons } from "../../utils/icons";
 
 import { updateTime } from "./components/time";
 
 let editor_mode = false;
 
-function widgetDrag(widgetID: string, widget_object: HTMLElement) {
+function widgetDrag(widget: Widget, widget_object: HTMLElement) {
   widget_object.style.opacity = "0.3";
 
-  checkWidgetSpace(widgetID, widget_object);
+  checkWidgetSpace(widget, widget_object);
 
   enterWidgetEditor();
 
@@ -123,7 +123,7 @@ function exitWidgetEditor() {
   };
 };
 
-function checkWidgetSpace(widgetID: string, widget_object: HTMLElement) {
+function checkWidgetSpace(widget: Widget, widget_object: HTMLElement) {
   const widget_areas = document.querySelectorAll<HTMLElement>(".widget-area, .widget-area-visible");
 
   widget_areas.forEach(widget_area => {
@@ -142,11 +142,11 @@ function checkWidgetSpace(widgetID: string, widget_object: HTMLElement) {
       };
 
       function dropWidget(e: DragEvent) {
-          console.log(`Placed widget: ${widgetID} in: ${widget_area.id}`)
+          console.log(`Placed widget: ${widget.id} in: ${widget_area.id}`)
           widget_area.className = ("widget-area-visible");
           e.preventDefault();
 
-          renderWidget(widgetID, widget_area);
+          renderWidget(widget, widget_area);
       };
 
       widget_area.addEventListener("dragover", dragWidgetOver);
@@ -155,48 +155,46 @@ function checkWidgetSpace(widgetID: string, widget_object: HTMLElement) {
   });
 };
 
-function renderWidget(widgetID: string, area: HTMLElement) {
-  const widget = Widgets.find(w => w.id === widgetID);
-  if (widget) {
-      console.log(`Rendering widget: ${widget.id} over: ${area.id}`);
+function renderWidget(widget: Widget, area: HTMLElement) {
+  console.log(`Rendering widget: ${widget.id} over: ${area.id}`);
 
-      const new_widget_id = `w-${new Date().getTime().toString()}`;
-      const new_widget = document.createElement('div');
-      new_widget.id = new_widget_id;
+  const new_widget_id = `w-${new Date().getTime().toString()}`;
+  const new_widget = document.createElement('div');
+  new_widget.id = new_widget_id;
 
-      if (widget.style) {
-          Object.entries(widget.style).forEach(([key, value]) => {
-              if (value) {
-                  (new_widget.style as any)[key.replace("_", "-")] = value.toString();
-              }
-          });
-      };
-
-      area.innerHTML = "";
-
-      widget.area = area.id;
-      widget.id = new_widget.id;
-
-      saveWidget({
-          id: widget.id,
-          type: widget.type,
-          category: widget.category,
-          className: widget.className,
-          content: widget.content,
-          style: widget.style,
-          properties: widget.properties,
-          area: widget.area,
+  if (widget.style) {
+      Object.entries(widget.style).forEach(([key, value]) => {
+          if (value) {
+              (new_widget.style as any)[key.replace("_", "-")] = value.toString();
+          };
       });
-
-      if (widget.category === WidgetCategory.Time) {
-          area.appendChild(new_widget);
-          updateTime(widget, new_widget_id);
-          setInterval(() => updateTime(widget, new_widget_id), 1000);
-      } else {
-          new_widget.innerHTML = widget.content;
-          area.appendChild(new_widget);
-      };
   };
+
+  area.innerHTML = "";
+
+  widget.area = area.id;
+  widget.id = new_widget.id;
+
+  saveWidget({
+    id: widget.id,
+    type: widget.type,
+    category: widget.category,
+    className: widget.className,
+    content: widget.content,
+    style: widget.style,
+    properties: widget.properties,
+    area: widget.area,
+  });
+
+  if (widget.category === WidgetCategory.Time) {
+    area.appendChild(new_widget);
+    updateTime(widget, new_widget_id);
+    setInterval(() => updateTime(widget, new_widget_id), 1000);
+  } else {
+    new_widget.innerHTML = widget.content;
+    area.appendChild(new_widget);
+  };
+  
 };
 
 function saveWidget(widget: Widget) {

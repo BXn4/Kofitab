@@ -177,7 +177,7 @@ function createWidgetsMenu() {
     widget_object.setAttribute("draggable", "true");
 
     widget_object.addEventListener("dragstart", () => {
-      widgetDrag(widget.id, widget_object);
+      widgetDrag(widget, widget_object);
     });
 
     widgets_container.appendChild(widget_object);
@@ -317,7 +317,7 @@ function showWidgetsCategory() {
             widget_object.setAttribute("draggable", "true");
         
             widget_object.addEventListener("dragstart", () => {
-              widgetDrag(widget.id, widget_object);
+              widgetDrag(widget, widget_object);
             });
         
             widgets_container.appendChild(widget_object);
