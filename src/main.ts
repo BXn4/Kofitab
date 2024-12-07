@@ -18,6 +18,8 @@ function init() {
     };
   };
 
+  // Not yet done, shows the first start popup tour.
+  
   /* if (isEnabled(Settings.FirstStart)) {
     const first_start_container = document.createElement("div");
     first_start_container.id = "first-start-container";

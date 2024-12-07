@@ -209,31 +209,6 @@ input:checked + .slider:before {
     height: 100vh;
     overflow: hidden;
 }
-#widgets-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    z-index: 1;
-}
-.widget-area {
-    position: relative; /* Scopes the absolute positioning of its children */
-    width: 100%; 
-    height: 100%;
-    background: transparent;
-}
-.widget-area-visible {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-.widget-area-selected {
-    border: 5px solid rgb(255, 255, 255);
-    border-radius: 12px;
-    backdrop-filter: blur(2px);
-}
 #cancel-widget-drag {
     position: absolute;
     bottom: 0%;
@@ -366,3 +341,30 @@ input:checked + .slider:before {
     padding: 20px;
     z-index: 2;
 }
+/* TODO: Need some fixes in the widget areas and in the widgets overlay */
+#widgets-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    z-index: 1;
+}
+.widget-area {
+    position: relative;
+    width: 100%; 
+    height: 100%;
+    background: transparent;
+}
+.widget-area-visible {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.widget-area-selected {
+    border: 5px solid rgb(255, 255, 255);
+    border-radius: 12px;
+    backdrop-filter: blur(2px);
+}
+/* TODO END */

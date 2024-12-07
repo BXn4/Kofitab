@@ -76,6 +76,8 @@ function enterWidgetEditor() {
       { id: "change-fill-button", icon: EditorIcons.change_background_fill, label: "Change Background Fill", class: "customization-change-fill" },
       { id: "properties-button", icon: EditorIcons.properties, label: "Properties", class: "customization-properties" },
     ];
+
+    /* Modified to place the widget customization in the widget area div instead the widget. */
   
     /* const widgets: Widget[] = JSON.parse(localStorage.getItem('widgets') || '[]');
 
@@ -153,6 +155,7 @@ function checkWidgetSpace(widget: Widget, widget_object: HTMLElement) {
       };
 
       function dropWidget(e: DragEvent) {
+          /* I noticed that, sometimes when I drag and drop, the previous placed widget getting duplicated in the new area */
           console.log(`Placed widget: ${widget.id} in: ${widget_area.id}`)
           widget_area.className = ("widget-area-visible");
           e.preventDefault();
