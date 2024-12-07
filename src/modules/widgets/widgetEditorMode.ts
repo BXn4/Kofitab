@@ -65,51 +65,62 @@ function enterWidgetEditor() {
   if (!editor_mode) {
     hideWidgetsMenu();
   } else if (editor_mode) {
-    /*
     const customization_buttons = [
       { id: "maximize-button", icon: EditorIcons.maximize, label: "Maximize", class: "customization-maximize" },
       { id: "minimize-button", icon: EditorIcons.minimize, label: "Minimize", class: "customization-minimize"  },
-      { id: "move-button", icon: EditorIcons.move, label: "Move", class: "customization-move" },
+      { id: "move-button", icon: EditorIcons.move, label: "Move", class: "customization-move"  },
       { id: "move-up-button", icon: EditorIcons.move_up, label: "Move Up", class: "customization-move-up" },
       { id: "move-down-button", icon: EditorIcons.move_down, label: "Move Down", class: "customization-move-down" },
       { id: "change-font-button", icon: EditorIcons.change_font, label: "Change Font", class: "customization-change-font" },
       { id: "change-color-button", icon: EditorIcons.change_color, label: "Change Color", class: "customization-change-color" },
       { id: "change-fill-button", icon: EditorIcons.change_background_fill, label: "Change Background Fill", class: "customization-change-fill" },
-  ];
+      { id: "properties-button", icon: EditorIcons.properties, label: "Properties", class: "customization-properties" },
+    ];
   
-  const widgets = document.querySelectorAll('[id^="w-"]');
+    /* const widgets: Widget[] = JSON.parse(localStorage.getItem('widgets') || '[]');
 
-  widgets.forEach((widget) => {
-      const customization_container = document.createElement('div');
-      customization_container.id = "customization-container";
+    widgets.forEach((widget) => {
+      if (widget.area) {
+        const area = document.getElementById(widget.area);
 
-      customization_buttons.forEach(customization => {
-          const button = document.createElement("button");
-          button.id = customization.id;
-          button.className = customization.class;
-          button.setAttribute("aria-label", customization.label);
-
-          const icon = new DOMParser().parseFromString(customization.icon, 'image/svg+xml').documentElement;
-          icon.setAttribute('width', "24");
-          icon.setAttribute('height', "24");
-          button.appendChild(icon);
-
-          customization_container.appendChild(button);
-
-          widget.appendChild(customization_container);
-      });
-  }); */
-};
+        if (area) {
+          const customization_container = document.createElement('div');
+          customization_container.id = "customization-container";
+  
+          customization_buttons.forEach(customization => {
+            const button = document.createElement("button");
+            button.id = customization.id;
+            button.className = customization.class;
+            button.setAttribute("aria-label", customization.label);
+  
+            const icon = new DOMParser().parseFromString(customization.icon, 'image/svg+xml').documentElement;
+            icon.setAttribute('width', "24");
+            icon.setAttribute('height', "24");
+            button.appendChild(icon);
+  
+            customization_container.appendChild(button);
+  
+            area.appendChild(customization_container);
+          });
+        };
+      };
+    }); */
+  };
 };
 
 function exitWidgetEditor() {
   const widget_areas = document.querySelectorAll(".widget-area-visible");
+  const customization_containers = document.querySelectorAll("#customization-container");
 
   widget_areas.forEach(widget => {
       widget.className = "widget-area";
       // Fastest way to remove all event listeners
       // https://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
       widget.replaceWith(widget.cloneNode(true));
+
+      customization_containers.forEach(customization_container => {
+        customization_container?.remove();
+    });
   });
 
   const cancel_widget_drag = document.getElementById("cancel-widget-drag");
