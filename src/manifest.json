@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Kofizen",
-  "version": "1.0",
-  "description": "Your new homescreen",
+  "name": "Kofitab",
+  "version": "0.1",
+  "description": "Your new homepage. Highly customizable and easy to use.",
   "icons": {
     "48": "icons/icon.png"
   },

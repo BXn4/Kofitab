@@ -1,6 +1,6 @@
 import { loadLocale, getLocalizedText } from "./utils/locales";
 import { getWidgets, WidgetCategory, CategoryFilterWidget } from "./modules/widgets/widgetBuilder";
-import { enterWidgetEditor, widgetDrag, editorMode, placeWidgets } from "./modules/widgets/widgetEditorMode"
+import { enterWidgetEditor, widgetDrag, editorMode, loadWidgets } from "./modules/widgets/widgetEditorMode"
 import { Settings, isEnabled, getValue, updateSetting } from "./utils/settings";
 import { BasicIcons } from "./utils/icons";
 
@@ -108,7 +108,7 @@ function init() {
 
   document.addEventListener("click", closeAllOpened);
 
-  placeWidgets();
+  loadWidgets();
 };
 
 function createWidgetArea(id: number) {

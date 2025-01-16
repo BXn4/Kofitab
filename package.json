@@ -1,11 +1,11 @@
 {
-    "name": "Kofizen",
+    "name": "Kofitab",
     "version": "0.0.1",
-    "description":"Your new homescreen",
+    "description":"Your new homepage. Highly customizable and easy to use.",
     "author":"BXn4",
     "license":"MIT",
     "type":"module",
-    "repository":"https://github.com/bxn4/kofizen",
+    "repository":"https://github.com/bxn4/kofitab",
     "contributors":[
        {
           "name":"BXn4",

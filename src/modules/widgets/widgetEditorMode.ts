@@ -170,6 +170,17 @@ function checkWidgetSpace(widget: Widget, widget_object: HTMLElement) {
 };
 
 function renderWidget(widget: Widget, area: HTMLElement) {
+  const widgets: Widget[] = JSON.parse(localStorage.getItem('widgets') || '[]');
+
+  widgets.forEach((widget: Widget) => {
+    if (widget.area) {
+      if (widget.area === area.id) {
+        console.log(`Duplicated widgets found on: ${area.id}, removoing the old one`);
+        removeWidget(widget);
+      };
+    };
+  });
+
   console.log(`Rendering widget: ${widget.id} over: ${area.id}`);
 
   const new_widget_id = `w-${new Date().getTime().toString()}`;
@@ -217,7 +228,7 @@ function saveWidget(widget: Widget) {
   localStorage.setItem('widgets', JSON.stringify(widgets));
 };
 
-function placeWidgets() {
+function loadWidgets() {
   const widgets: Widget[] = JSON.parse(localStorage.getItem('widgets') || '[]');
 
   widgets.forEach((widget: Widget) => {
@@ -254,8 +265,14 @@ function placeWidgets() {
   });
 };
 
+function removeWidget(widget: Widget) {
+  const widgets: Widget[] = JSON.parse(localStorage.getItem('widgets') || '[]');
+  const filteredWidgets = widgets.filter(w => w.area !== widget.area);
+  localStorage.setItem('widgets', JSON.stringify(filteredWidgets));
+};
+
 function editorMode(value: boolean) {
   editor_mode = value;
 };
 
-export { widgetDrag, checkWidgetSpace, enterWidgetEditor, exitWidgetEditor, editorMode, placeWidgets }
+export { widgetDrag, checkWidgetSpace, enterWidgetEditor, exitWidgetEditor, editorMode, loadWidgets }
