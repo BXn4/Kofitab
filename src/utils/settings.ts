@@ -52,7 +52,7 @@ const configuration: Setting[] = [
         category: SettingsCategory.General,
         enabled: true,
         type: SettingType.Input,
-        value: "./assets/images/backgrounds/default.jpg"
+        value: "./assets/images/backgrounds/waterdrop.jpg"
     },
 ];
 
